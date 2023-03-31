@@ -1,0 +1,78 @@
+import random
+doors = ["a", "b", "c"]
+changeWin = 0
+stayWin = 0
+changeCount = 0
+stayCount = 0
+totalCount = 0
+
+while totalCount < 1000:
+    totalCount += 1
+    prize = doors[random.randint(0, 2)]
+    remaining = [prize]
+    print("\n ------------- \n")
+    print(doors)
+    
+    door = doors.copy()
+    door.remove(prize)
+    
+    choice = ""
+    #choice = input("Guess a door: \n")
+    
+    r1 = random.randint(0, 2)
+    if r1 == 0:
+        choice = "a"
+    elif r1 == 1:
+        choice = "b"
+    elif r1 == 2:
+        choice = "c"
+    
+    if not choice in doors: 
+        print("invalid input")
+        continue
+    elif choice == prize:
+        openDoor = door[random.randint(0, 1)]
+        print("You chose", choice, "\nDoor", openDoor[0], "is empty")
+        door.remove(openDoor)
+        remaining.extend(door)
+    else:
+        openDoor = door.remove(choice)
+        print("You chose", choice, "\nDoor", door[0], "is empty")
+        remaining.append(choice)
+    
+    remaining.remove(choice)
+    
+    change = ""
+    #change = input("Do you want to change doors? y/n \n")
+    
+    r2 = random.randint(0, 1)
+    if r2 == 0:
+        change = "y"
+    elif r2 == 1:
+        change = "n"
+    
+    if change == "y":
+        changeCount += 1
+        choice = remaining[0]
+        print("You changed to door", choice)
+    elif change == "n":
+        stayCount += 1
+        print("You stayed with door", choice)
+    else:
+        print("Invalid input")
+        continue
+    
+    
+    print("The prize was behind door", prize)
+    if choice == prize and change == "y":
+        print("You win")
+        changeWin += 1
+    elif choice == prize and change == "n":
+        print("You win")
+        stayWin += 1
+    else:
+        print("You lose")
+    
+
+print("\n \nWhen changing your door, you won", changeWin, "out of", changeCount, "times. Thats", round(changeWin/changeCount * 100, 2), "percent of the time")
+print("When keeping the same door, you won", stayWin, "out of", stayCount, "times. Thats", round(stayWin/stayCount * 100, 2), "percent of the time")
